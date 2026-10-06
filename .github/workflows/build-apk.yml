@@ -44,6 +44,10 @@ jobs:
         run: |
           npm install --legacy-peer-deps
 
+      - name: Generate Android Native Project via Expo Prebuild
+        run: |
+          npx expo prebuild --platform android --clean
+
       - name: Generate Signing Keystore
         run: |
           mkdir -p android/app
@@ -54,12 +58,8 @@ jobs:
       - name: Build Android APK via Gradle
         working-directory: android
         run: |
-          if [ -f gradlew ]; then
-            chmod +x gradlew
-            ./gradlew assembleRelease --no-daemon || ./gradlew assembleDebug --no-daemon
-          else
-            gradle assembleRelease --no-daemon || gradle assembleDebug --no-daemon
-          fi
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon || ./gradlew assembleDebug --no-daemon
 
       - name: Prepare APK Output
         run: |
