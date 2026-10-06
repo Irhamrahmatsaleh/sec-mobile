@@ -1,0 +1,2 @@
+rootProject.name = 'sec-mobile'
+include ':app'
