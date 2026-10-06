@@ -57,6 +57,8 @@ jobs:
 
       - name: Build Android APK via Gradle
         working-directory: android
+        env:
+          NODE_BINARY: node
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon || ./gradlew assembleDebug --no-daemon
@@ -64,14 +66,13 @@ jobs:
       - name: Prepare APK Output
         run: |
           mkdir -p build-output
-          # Locate generated APK and copy to release binary
           APK_FILE=$(find android/app/build/outputs/apk -name "*.apk" | head -n 1)
           if [ -n "$APK_FILE" ]; then
+            echo "Found generated APK: $APK_FILE"
             cp "$APK_FILE" build-output/sec-live.apk
           else
-            echo "Building fallback standalone APK bundle..."
-            npx expo export --platform android || true
-            touch build-output/sec-live.apk
+            echo "Error: No APK found in outputs!"
+            exit 1
           fi
 
       - name: Upload Artifact

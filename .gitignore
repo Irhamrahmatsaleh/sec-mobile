@@ -8,9 +8,7 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+android/
+ios/
 .env
 .env.local
-android/app/build/
-android/.gradle/
-android/build/
-android/app/debug.keystore
